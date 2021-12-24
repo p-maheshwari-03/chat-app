@@ -1,0 +1,47 @@
+.joinContainer{
+    width:400px;
+    height:400px;
+    position: absolute;
+    margin: 100px auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    background-color: #404040;
+    border-radius: 4px;
+}
+.welcomeText{
+    text-align: center;
+    color: blanchedalmond;
+}
+.inputContainer{
+    display: flex;
+    flex-direction: column;
+}
+.inputBox{
+    width:350px;
+    height: 48px;
+    background-color:#696969;
+    margin:25px 0;
+    padding: 0 15px;
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+.inputBox::placeholder{
+    color: #A9A9A9;
+    font-size: 16px;
+}
+.joinButton{
+    margin:30px auto;
+    padding: 0 15px;
+    height:40px;
+    width:80px;
+    background-color: #ff9933;
+    outline: none;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+}
