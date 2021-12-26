@@ -1,0 +1,61 @@
+.roomContainer{
+    height: calc(100vh - 50px);
+    width:375px;
+    margin: 15px auto;
+    background-color: 	#404040;
+    border-radius: 6px;
+}
+.userHeader{
+    margin: 18px 0 0 18px;
+}
+.userName{
+    color:white;
+    font-size: x-large;
+}
+.inChatText{
+    color:white;
+    font-size: smaller;
+}
+.hr{
+    width: calc(100% - 18px);
+}
+
+
+.messageSendContainer{
+    display: flex;
+    flex-direction: row;
+    position: absolute;
+    bottom: 40px;
+}
+
+.chatInputBox{    
+    width:290px;
+    height: 38px;
+    background-color:#696969;    
+    margin: auto 1px 0 12px;
+    border: none;
+    color: white;
+    font-size: 16px;
+    outline: none;
+    padding: 0 15px;
+    border-radius: 7px 0 0 7px;
+    font-size: 13px;
+}
+.chatInputBox::placeholder{
+    color: #A9A9A9;
+    font-size: 11px;
+}
+.sendButton{
+    width:60px;
+    height: 38px;
+    background-color: #ff9933;
+    outline: none;
+    border: none;
+    border-radius: 0 7px 7px 0;
+    color:white;
+    cursor: pointer;
+}
+.chatMessageContainer{
+    display:flex;
+    flex-direction: column;
+}

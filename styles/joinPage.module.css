@@ -36,9 +36,9 @@
 }
 .joinButton{
     margin:30px auto;
-    padding: 0 15px;
-    height:40px;
-    width:80px;
+    padding: 12px;
+    height:35px;
+    width:70px;
     background-color: #ff9933;
     outline: none;
     border: none;

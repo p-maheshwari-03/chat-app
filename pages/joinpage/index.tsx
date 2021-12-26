@@ -1,20 +1,25 @@
-import React, { FC, useState } from "react";
-import { Socket } from "socket.io";
+import React, { createContext, FC, useEffect, useState } from "react";
 import styles from "../../styles/joinPage.module.css";
-import { joinHandler } from "../../controllers/joinPage";
+import { JoinPageProps } from "../../models/joinPage";
 
-const JoinPage : FC = () => {
+const JoinPageContext = createContext({})
+
+const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
+    const [joined, setJoined] = useState(false);
 
     const handleJoin = (event:any) => {  
-        const userData = {id:username, username, roomName} 
-        event.preventDefault();     
-        joinHandler(userData);
-     
+        if(roomName && username){        
+        const updatedLocation = `/room?room=${roomName}&name=${username}`;
+        window.location.href=updatedLocation;
+        setJoined(true);
+        } 
+        event.preventDefault(); 
     }
 
-    return <div className={styles.joinContainer}>
+    return <JoinPageContext.Provider value={{username, roomName}} >
+    <div className={styles.joinContainer}>
         <h1 className={styles.welcomeText}>Welcome to ChatApp</h1>
         <div className={styles.inputContainer}>
             <input className={styles.inputBox} value={username} name="username" placeholder="Input your user name" onChange={(e)=> setUsername(e.target.value)}/>
@@ -22,6 +27,7 @@ const JoinPage : FC = () => {
         </div>
         <button className={styles.joinButton} onClick={handleJoin}>Join</button>
     </div>
+    </JoinPageContext.Provider> 
 }
 
 export default JoinPage;
