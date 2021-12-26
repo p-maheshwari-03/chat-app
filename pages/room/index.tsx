@@ -28,16 +28,27 @@ const Room :FC = () => {
 
     useEffect(() => {
       socket.on('message', message => {
-        console.log('connection1');
 
         setMessages(messages => [ ...messages, message ]);
       });
       
       socket.on("roomData", ({ users }) => {
-        console.log('connection2');
         setUsers(users);
       });
   }, []);
+
+  useEffect(()=>{
+    const messages:any = document.getElementById('messages');
+
+      // Prior to getting your messages.
+      let shouldScroll = messages?.scrollTop + messages?.clientHeight === messages?.scrollHeight;
+
+      console.log(shouldScroll, " should scroll");
+      // After getting your messages.
+      if (!shouldScroll) {
+        messages.scrollTop = messages.scrollHeight;
+      }
+  })
   
     const sendMessage = (event:any) => {
       if(message) {
@@ -53,7 +64,7 @@ const Room :FC = () => {
             <span className={styles.userName}>{name} </span><span className={styles.inChatText}>in {room}</span>
         </div>
         <hr className={styles.hr} color="#808080" />
-        <div className={styles.chatMessageContainer}>
+        <div id="messages" className={styles.chatMessageContainer}>
         <Messages messages={messages} name={name}/>
         </div>
         <div className={styles.messageSendContainer}>

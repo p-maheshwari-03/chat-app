@@ -1,11 +1,17 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import styles from '../styles/Home.module.css'
+import { Layout } from '../components/layout'
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <div className={styles.container}>
+
+  // console.log("pageProps ", pageProps);
+  
+  return <Layout>
     <Component {...pageProps} />
-  </div>
+  </Layout> 
+
 }
 
 export default MyApp
