@@ -44,7 +44,7 @@ nextApp.prepare().then(async () => {
           room: r.name,
           messages: r.messages.map((m: any) => ({
             sender: m.sender,
-            message: msg
+            message: m.message
           }))
         });
         socket.broadcast.to(r.name).emit("message", {
