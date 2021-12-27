@@ -4,6 +4,6 @@ export type ChatBubbleType = {
 }
 
 type Message = {
-    text:string,
-    user:string
+    message:string,
+    sender:string
 }

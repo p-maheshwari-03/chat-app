@@ -1,0 +1,45 @@
+.bubbleContainer{
+    display: flex;
+    flex-direction: column;
+}
+
+.username{
+    color: blanchedalmond;
+    font-size:9px;
+    margin:3px 14px auto;
+    display: flex;
+    flex-direction: row-reverse;
+    float:right;
+}
+.nonUsername{
+    color: blanchedalmond;
+    font-size:9px;
+    margin : 3px 0 0 14px;
+}
+
+.nonUserChatBubble{
+    width: max-content;
+    max-width: 300px;
+	height: auto;
+    margin: 20px auto 0 10px;
+    padding:14px;
+    color: white;
+    background-color: #1c0908;
+    font-size: 13px;
+    border-radius: 0 6px 6px 6px;
+    float: left;
+    position: relative;
+}
+.userChatBubble{
+    width: max-content;
+    max-width: 300px;
+	height: auto;
+    margin: 30px 10px 0 auto;
+    padding:14px;
+    color: white;
+    background-color: #8a2f78;
+    font-size: 13px;
+    border-radius: 6px 0 6px 6px;
+    float: right;
+    position: relative;
+}
