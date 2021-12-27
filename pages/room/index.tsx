@@ -8,7 +8,6 @@ const Room :FC = () => {
  
   const [room, setRoom] = useState<any|null>(null);
   const [name, setName]= useState<any|null>(null);
-  const [users, setUsers]= useState<any|null>(null);
   const [message, setMessage]= useState<any|null>(null);
   const [messages, setMessages]= useState<Array<object>|[]>([]);
 
@@ -24,16 +23,15 @@ const Room :FC = () => {
           alert(error);
         }
       });
+
+      socket.on('joined', (roomData) => {
+        setMessages([...roomData.messages]);
+      });
     }, []);
 
     useEffect(() => {
-      socket.on('message', message => {
-
-        setMessages(messages => [ ...messages, message ]);
-      });
-      
-      socket.on("roomData", ({ users }) => {
-        setUsers(users);
+      socket.on('message', newMessage => {
+        setMessages(messages => [ ...messages, newMessage ]);
       });
   }, []);
 
@@ -43,7 +41,6 @@ const Room :FC = () => {
       // Prior to getting your messages.
       let shouldScroll = messages?.scrollTop + messages?.clientHeight === messages?.scrollHeight;
 
-      console.log(shouldScroll, " should scroll");
       // After getting your messages.
       if (!shouldScroll) {
         messages.scrollTop = messages.scrollHeight;
@@ -52,8 +49,7 @@ const Room :FC = () => {
   
     const sendMessage = (event:any) => {
       if(message) {
-        console.log(message, " message");
-        socket.emit('sendMessage', message, () => setMessage(''));
+        socket.emit('sendMessage', message, name, room, () => setMessage(''));
       }
     }
   

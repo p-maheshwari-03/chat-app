@@ -13,6 +13,7 @@ const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
         if(roomName && username){        
         const updatedLocation = `/room?room=${roomName}&name=${username}`;
         window.location.href=updatedLocation;
+        //History.push
         setJoined(true);
         } 
         event.preventDefault(); 
