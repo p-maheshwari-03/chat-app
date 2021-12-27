@@ -7,6 +7,7 @@ import {
   removeUser,
   findRoom,
   sendMessage,
+  addUser,
 } from "./controllers/users";
 
 const port: number = parseInt(process.env.PORT || "3000", 10);
@@ -30,19 +31,20 @@ nextApp.prepare().then(async () => {
     .catch((err: any) => console.log(err));
 
   io.on("connection", (socket: socketio.Socket) => {
-    socket.on("join", async ({ name, room }, callback) => {
+    socket.on("join", async ({ id = socket.id, name, room }, callback) => {
       const currRoom = await findRoom(room);
+      const user = await addUser(name, id, room);
       const msg = `${name}, welcome to room ${room}.`;
       const sender = "Bot";
       
       try {
-        const r = await sendMessage(msg, currRoom.name, sender);
+        const r = await sendMessage(`${name} has joined!`, currRoom.name, sender, id);
         socket.join(r.name);
         socket.emit('joined', { 
           room: r.name,
           messages: r.messages.map((m: any) => ({
             sender: m.sender,
-            message: m.message
+            message: msg
           }))
         });
         socket.broadcast.to(r.name).emit("message", {
@@ -74,12 +76,14 @@ nextApp.prepare().then(async () => {
       callback();
     });
 
-    socket.on("disconnect", () => {
-      const user = removeUser(socket.id);
+    socket.on("disconnect", async () => {
+      const user = await removeUser(socket.id);
       if (user) {
-        io.to(user.room).emit("message", {
+        const msg = `${user.name} has left.`;
+        const r = await sendMessage(msg, user.room);
+        socket.broadcast.to(user.room).emit("message", {
           sender: "Bot",
-          message: `${user.name} has left.`,
+          message: msg,
         });
       }
     });

@@ -1,8 +1,9 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-    id:String,
+    connection_id:String,
     name:String,
+    room:String,
 })
 
 const messageSchema = new mongoose.Schema({
@@ -10,6 +11,7 @@ const messageSchema = new mongoose.Schema({
     timestamp:String,
     message:String,
     sender:String,
+    id:String,
 })
 
 const roomSchema = new mongoose.Schema({
@@ -21,6 +23,3 @@ const User = mongoose.model("user", userSchema);
 const Message = mongoose.model("message", messageSchema);
 const Room = mongoose.model('room', roomSchema);
 module.exports = {User, Message, Room};
-
-
-
