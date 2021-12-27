@@ -5,8 +5,6 @@ import { Layout } from '../components/layout'
 
 
 function MyApp({ Component, pageProps }: AppProps) {
-
-  // console.log("pageProps ", pageProps);
   
   return <Layout>
     <Component {...pageProps} />
