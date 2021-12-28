@@ -72,10 +72,10 @@
   }
 
   .chatMessageContainer::-webkit-scrollbar-thumb {
-    background: #ff9933; 
+    background: #75481a; 
     border-radius: 5px;
   }
 
   .chatMessageContainer::-webkit-scrollbar-thumb:hover {
-    background: #75481a; 
+    background: #ff9933; 
   }
