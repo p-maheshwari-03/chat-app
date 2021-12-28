@@ -8,7 +8,8 @@ import {
   findRoom,
   sendMessage,
   addUser,
-} from "./controllers/users";
+} from "./controllers";
+import { RoomType } from "./models/model";
 
 const port: number = parseInt(process.env.PORT || "3000", 10);
 const nextApp = next({});
@@ -20,7 +21,7 @@ nextApp.prepare().then(async () => {
   const io: socketio.Server = new socketio.Server();
   io.attach(server);
 
-  const mongoDB:any = process.env.MONGO_DB;
+  const mongoDB: any = process.env.MONGO_DB;
 
   mongoose
     .connect(mongoDB)
@@ -31,15 +32,15 @@ nextApp.prepare().then(async () => {
 
   io.on("connection", (socket: socketio.Socket) => {
     socket.on("join", async ({ id = socket.id, name, room }, callback) => {
-      const currRoom = await findRoom(room);
+      const currRoom: RoomType = await findRoom(room);
       const user = await addUser(name, id, room);
       const msg = `${name}, welcome to room ${room}.`;
       const sender = "Bot";
-      
+
       try {
-        const r = await sendMessage(`${name} has joined!`, currRoom.name, sender, id);
+        const r: RoomType = await sendMessage(`${name} has joined!`, currRoom.name, sender);
         socket.join(r.name);
-        socket.emit('joined', { 
+        socket.emit('joined', {
           room: r.name,
           messages: r.messages.map((m: any) => ({
             sender: m.sender,

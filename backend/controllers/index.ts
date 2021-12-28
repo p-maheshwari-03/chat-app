@@ -1,6 +1,8 @@
-const { User, Message, Room } = require("../models/model");
+import Models, { UserType, MessageType, RoomType } from "../models/model";
 
-const createMessage = (msg, room, sender = "Bot") => {
+const { User, Message, Room } = Models;
+
+const createMessage = (msg: string, room: string, sender: string = "Bot"): MessageType => {
   return new Message({
     room,
     timestamp: Date.now(),
@@ -9,10 +11,10 @@ const createMessage = (msg, room, sender = "Bot") => {
   });
 };
 
-const findRoom = (roomId) => {
+export const findRoom = (roomId: string): Promise<RoomType> => {
   const room = roomId.trim();
   return new Promise((response, reject) => {
-    if(!room) {
+    if (!room) {
       reject(new Error("Invalid room"));
     }
 
@@ -26,8 +28,8 @@ const findRoom = (roomId) => {
         });
         newRoom
           .save()
-          .then((res) => response(res))
-          .catch((err) => {
+          .then((res: RoomType) => response(res))
+          .catch((err: Error) => {
             console.log(err, "Cannot create room");
             reject(new Error("Cannot create room"));
           });
@@ -36,10 +38,10 @@ const findRoom = (roomId) => {
   });
 };
 
-const addUser = (name, id, room) => {
+export const addUser = (name: string, id: string, room: string): Promise<UserType> => {
   return new Promise((response, reject) => {
 
-    if(!name || !room) {
+    if (!name || !room) {
       reject(new Error("User can't be added"));
     }
 
@@ -50,45 +52,38 @@ const addUser = (name, id, room) => {
     });
     newUser
       .save()
-      .then((res) => response(res))
+      .then((res: UserType) => response(res))
       .catch(() => reject("Cannot create user"));
   });
 };
 
-const sendMessage = (msg, roomId, sender = "Bot", id = null) => {
+export const sendMessage = (msg: string, roomId: string, sender: string = "Bot"): Promise<RoomType> => {
   const room = roomId.trim();
   const message = msg.trim();
   return new Promise((response, reject) => {
 
-    if(!room) {
+    if (!room) {
       reject(new Error("Room not found"));
     }
 
-    if(!message) {
+    if (!message) {
       reject(new Error("Unable to send message"));
     }
 
     Room.findOne({ name: room }).exec((error, data) => {
       if (data && !error) {
-        const newMessage = createMessage(message, room, sender, id);
+        const newMessage = createMessage(message, room, sender);
         data.messages = [...data.messages, newMessage];
-        data.save().then((res) => response(res));
+        data.save().then((res: RoomType) => response(res));
       } else if (error) reject(error);
     });
   });
 };
 
-const removeUser = (id) => {
+export const removeUser = (id: string): Promise<UserType> => {
   return new Promise((response, reject) => {
     User.findOneAndDelete({ connection_id: id }).exec((error, data) =>
       response(data)
     );
   });
-};
-
-module.exports = {
-  findRoom,
-  sendMessage,
-  removeUser,
-  addUser,
 };
