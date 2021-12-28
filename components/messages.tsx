@@ -1,8 +1,12 @@
-import React, { FC } from 'react';
-import { MessagesTypes } from '../models/messages';
+import React from 'react';
 import ChatBubble from './chatBubble';
 
-const Messages:FC<MessagesTypes> = ({ messages, name }) => (
+type MessagesTypes = {
+  messages:any[],
+  name:string
+};
+
+const Messages = ({ messages, name }:MessagesTypes) => (
   <div>
     {messages.map((message, i) => <div key={i}><ChatBubble message={message} name={name} /></div>)}
   </div>

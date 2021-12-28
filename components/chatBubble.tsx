@@ -1,9 +1,18 @@
 import React from "react";
 import styles from "../styles/chatBubble.module.css";
-import { ChatBubbleType } from "../models/chatBubble";
-import { FC } from "react";
 
-const ChatBubble :FC<ChatBubbleType> = ( {message: { message, sender }, name }) => {
+type ChatBubbleType = {
+    message: Message,
+    name: string
+}
+
+type Message = {
+    message:string,
+    sender:string
+}
+
+
+const ChatBubble = ( {message: { message, sender }, name }:ChatBubbleType) => {
     return (
         <div className={styles.bubbleContainer}>
             <div className={sender === name.trim() ? styles.userChatBubble : sender == "Bot" ? styles.botChatBubble :styles.nonUserChatBubble}>

@@ -1,10 +1,7 @@
 import React, { createContext, FC, useEffect, useState } from "react";
 import styles from "../../styles/joinPage.module.css";
-import { JoinPageProps } from "../../models/joinPage";
 
-const JoinPageContext = createContext({})
-
-const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
+const JoinPage = () => {
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
     const [joined, setJoined] = useState(false);
@@ -25,8 +22,7 @@ const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
         event.preventDefault(); 
     }
 
-    return <JoinPageContext.Provider value={{username, roomName}} >
-    <div className={styles.joinContainer}>
+    return <div className={styles.joinContainer}>
         <h1 className={styles.welcomeText}>Welcome to ChatApp</h1>
         <div className={styles.inputContainer}>
             <input className={styles.inputBox} value={username} name="username" placeholder="Input your user name" onChange={(e)=> setUsername(e.target.value)}/>
@@ -34,7 +30,6 @@ const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
         </div>
         <button className={styles.joinButton} onClick={handleJoin}>Join</button>
     </div>
-    </JoinPageContext.Provider> 
 }
 
 export default JoinPage;

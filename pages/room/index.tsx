@@ -4,7 +4,7 @@ import socket from "../../socket";
 import queryString from 'query-string';
 import Messages from "../../components/messages";
 
-const Room :FC = () => {
+const Room = () => {
  
   const [room, setRoom] = useState<any|null>(null);
   const [name, setName]= useState<any|null>(null);
