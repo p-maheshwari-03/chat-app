@@ -10,6 +10,12 @@ const JoinPage : FC <JoinPageProps>= ({dataFetcher}) => {
     const [joined, setJoined] = useState(false);
 
     const handleJoin = (event:any) => {  
+
+        if(!roomName?.trim().length || !username?.trim().length) {
+            window.alert("Enter both fields, Both required");
+            return;
+        }
+
         if(roomName && username){        
         const updatedLocation = `/room?room=${roomName}&name=${username}`;
         window.location.href=updatedLocation;

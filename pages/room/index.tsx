@@ -48,6 +48,10 @@ const Room :FC = () => {
   })
   
     const sendMessage = (event:any) => {
+      if(!message?.trim()) {window.alert("Can't send empty message")
+      return;
+    }
+
       if(message) {
         socket.emit('sendMessage', message, name, room, () => setMessage(''));
       }
@@ -64,7 +68,7 @@ const Room :FC = () => {
         <Messages messages={messages} name={name}/>
         </div>
         <div className={styles.messageSendContainer}>
-        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message" onChange={(e)=>setMessage(e.target.value)} onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}/>
+        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message (75 chars max)" onChange={(e)=>setMessage(e.target.value)} onKeyPress={event => event.key === 'Enter' ? sendMessage(event) : null}/>
         <button className={styles.sendButton} onClick={e => sendMessage(e)}>Send</button>
         </div>
     </div>
