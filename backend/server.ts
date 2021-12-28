@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import * as http from "http";
 import next, { NextApiHandler } from "next";
 import * as socketio from "socket.io";
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 import {
   removeUser,
   findRoom,
@@ -11,7 +11,6 @@ import {
 } from "./controllers/users";
 
 const port: number = parseInt(process.env.PORT || "3000", 10);
-const dev: boolean = process.env.NODE_ENV !== "production";
 const nextApp = next({});
 const nextHandler: NextApiHandler = nextApp.getRequestHandler();
 
@@ -21,10 +20,10 @@ nextApp.prepare().then(async () => {
   const io: socketio.Server = new socketio.Server();
   io.attach(server);
 
-  const mongoDB = process.env.MONGO_DB;
+  const mongoDB:any = process.env.MONGO_DB;
 
   mongoose
-    .connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true })
+    .connect(mongoDB)
     .then(() => {
       console.log("<------- db connected ------->");
     })
