@@ -8,7 +8,9 @@
     "plugin:import/warnings",
     "plugin:jsx-a11y/recommended",
     "plugin:react-hooks/recommended",
-    "airbnb"
+    "airbnb",
+    "plugin:import/typescript",
+    "plugin:@next/next/recommended"
   ],
   "env": {
     "browser": true,
@@ -29,5 +31,42 @@
       "version": "detect"
     }
   },
-  "plugins": []
+  "plugins": [],
+  "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "parent", "sibling", "index"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "no-restricted-globals": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+   ],
+    "react/jsx-props-no-spreading": "off",
+    "react/forbid-prop-types": "off",
+    "react/destructuring-assignment": "off",
+    "no-unsafe-optional-chaining": "off",
+    "no-nested-ternary":"off",
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".ts", ".tsx", ".jsx"] }],
+    "react/function-component-definition": [
+      2,
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ]
+  }
 }

@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+
 import ChatBubble from './ChatBubble';
 
 type MessagesTypes = {
@@ -8,7 +9,7 @@ type MessagesTypes = {
 
 const Messages: FC<MessagesTypes> = ({ messages, name }) => (
   <div>
-    {messages.map((message, i) => <div key={i}><ChatBubble message={message} name={name} /></div>)}
+    {messages.map((msg) => <div key={msg.id}><ChatBubble message={msg} name={name} /></div>)}
   </div>
 );
 

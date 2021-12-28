@@ -1,8 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
-import styles from '../../styles/room.module.css';
-import socket from '../../socket';
 import queryString from 'query-string';
+import React, { FC, useEffect, useState } from 'react';
+
 import Messages from '../../components/Messages';
+import socket from '../../socket';
+import styles from '../../styles/room.module.css';
 
 const Room: FC = () => {
   const [roomName, setRoomName] = useState<string>('');
@@ -10,8 +11,19 @@ const Room: FC = () => {
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<object> | []>([]);
 
+  const scrollToBottom = () => {
+    const msgE: any = document.getElementById('messages');
+    // Prior to getting your messages.
+    const Scroll = msgE?.scrollTop + msgE?.clientHeight
+      === msgE?.scrollHeight;
+    // After getting your messages.
+    if (!Scroll) {
+      msgE.scrollTop = msgE.scrollHeight;
+    }
+  };
+
   useEffect(() => {
-    const { room, name } = queryString.parse(location.search);
+    const { room, name } = queryString.parse(window.location.search);
     if (name && room) {
       setUserName(name.toString());
       setRoomName(room.toString());
@@ -21,25 +33,17 @@ const Room: FC = () => {
       if (error) {
         alert(error);
       }
+      scrollToBottom();
     });
 
     socket.on('joined', (roomData) => {
       setMessages([...roomData.messages]);
     });
 
-    socket.on('message', newMessage => {
-      setMessages(messages => [...messages, newMessage]);
+    socket.on('message', (newMessage) => {
+      setMessages((messageList) => [...messageList, newMessage]);
+      scrollToBottom();
     });
-
-    const messages: any = document.getElementById('messages');
-
-    // Prior to getting your messages.
-    let shouldScroll = messages?.scrollTop + messages?.clientHeight === messages?.scrollHeight;
-
-    // After getting your messages.
-    if (!shouldScroll) {
-      messages.scrollTop = messages.scrollHeight;
-    }
   }, []);
 
   const sendMessage = () => {
@@ -56,15 +60,23 @@ const Room: FC = () => {
   return (
     <div className={styles.roomContainer}>
       <div className={styles.userHeader}>
-        <span className={styles.userName}>{name} </span><span className={styles.inChatText}>in {roomName}</span>
+        <span className={styles.userName}>
+          {userName}
+          {' '}
+        </span>
+        <span className={styles.inChatText}>
+          in
+          {' '}
+          {roomName}
+        </span>
       </div>
       <hr className={styles.hr} color="#808080" />
       <div id="messages" className={styles.chatMessageContainer}>
         <Messages messages={messages} name={userName} />
       </div>
       <div className={styles.messageSendContainer}>
-        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message (75 chars max)" onChange={(e) => setMessage(e.target.value)} onKeyPress={event => event.key === 'Enter' ? sendMessage() : null} />
-        <button className={styles.sendButton} onClick={e => sendMessage()}>Send</button>
+        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message (75 chars max)" onChange={(e) => setMessage(e.target.value)} onKeyPress={(event) => (event.key === 'Enter' ? sendMessage() : null)} />
+        <button type="submit" className={styles.sendButton} onClick={() => sendMessage()}>Send</button>
       </div>
     </div>
   );

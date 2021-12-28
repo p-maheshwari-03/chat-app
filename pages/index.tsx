@@ -1,7 +1,7 @@
-import React from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
+import React from 'react';
+
 import JoinPage from './joinpage';
 
 const Home: NextPage = () => (
@@ -11,9 +11,7 @@ const Home: NextPage = () => (
       <meta name="description" content="Real Time Chat App" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
-    <div className={styles.link}>
-      <JoinPage />
-    </div>
+    <JoinPage />
   </div>
 );
 

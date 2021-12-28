@@ -1,8 +1,6 @@
 .joinContainer{
     width:400px;
     height:400px;
-    position: absolute;
-    margin: 100px auto;
     align-items: center;
     justify-content: center;
     display: flex;
@@ -44,4 +42,16 @@
     border: none;
     border-radius: 7px;
     cursor: pointer;
+}
+.error{
+    width:350px;
+    height: 48px;
+    background-color:#696969;
+    margin:25px 0;
+    padding: 0 15px;
+    border-radius: 5px;
+    border: none;
+    color: red;
+    font-size: 16px;
+    outline: none;
 }
