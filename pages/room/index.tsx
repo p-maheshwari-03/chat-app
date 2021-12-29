@@ -10,6 +10,7 @@ const Room: FC = () => {
   const [userName, setUserName] = useState<string>('');
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<object> | []>([]);
+  const [messageError, setMessageError] = useState<Boolean>(false);
 
   const scrollToBottom = () => {
     const msgE: any = document.getElementById('messages');
@@ -31,7 +32,7 @@ const Room: FC = () => {
 
     socket.emit('join', { name, room }, (error: any) => {
       if (error) {
-        alert(error);
+        console.error(error);
       }
       scrollToBottom();
     });
@@ -48,13 +49,17 @@ const Room: FC = () => {
 
   const sendMessage = () => {
     if (!message?.trim()) {
-      window.alert("Can't send empty message");
-      return;
+      setMessageError(true);
     }
 
     if (message) {
       socket.emit('sendMessage', message, userName, roomName, () => setMessage(''));
     }
+  };
+
+  const messageChangeHandler = (e: any) => {
+    setMessageError(false);
+    setMessage(e.target.value);
   };
 
   return (
@@ -75,9 +80,10 @@ const Room: FC = () => {
         <Messages messages={messages} name={userName} />
       </div>
       <div className={styles.messageSendContainer}>
-        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message (75 chars max)" onChange={(e) => setMessage(e.target.value)} onKeyPress={(event) => (event.key === 'Enter' ? sendMessage() : null)} />
+        <input className={styles.chatInputBox} value={message} name="message" placeholder="Enter your message" onChange={(e) => messageChangeHandler(e)} onKeyPress={(event) => (event.key === 'Enter' ? sendMessage() : null)} />
         <button type="submit" className={styles.sendButton} onClick={() => sendMessage()}>Send</button>
       </div>
+      {messageError && <span className={styles.error}>Please add some message</span>}
     </div>
   );
 };
