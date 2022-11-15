@@ -1,17 +1,19 @@
-import express, { Express } from "express";
-import * as http from "http";
-import next, { NextApiHandler } from "next";
-import * as socketio from "socket.io";
-import mongoose from "mongoose";
+import * as http from 'http';
+
+import express, { Express } from 'express';
+import mongoose from 'mongoose';
+import next, { NextApiHandler } from 'next';
+import * as socketio from 'socket.io';
+
 import {
   removeUser,
   findRoom,
   sendMessage,
   addUser,
-} from "./controllers";
-import { RoomType } from "./models/model";
+} from './controllers';
+import { RoomType } from './models/model';
 
-const port: number = parseInt(process.env.PORT || "3000", 10);
+const port: number = parseInt(process.env.PORT || '3000', 10);
 const nextApp = next({});
 const nextHandler: NextApiHandler = nextApp.getRequestHandler();
 
@@ -26,16 +28,16 @@ nextApp.prepare().then(async () => {
   mongoose
     .connect(mongoDB)
     .then(() => {
-      console.log("<------- db connected ------->");
+      console.log('<------- db connected ------->');
     })
     .catch((err: any) => console.log(err));
 
-  io.on("connection", (socket: socketio.Socket) => {
-    socket.on("join", async ({ id = socket.id, name, room }, callback) => {
+  io.on('connection', (socket: socketio.Socket) => {
+    socket.on('join', async ({ id = socket.id, name, room }, callback) => {
       const currRoom: RoomType = await findRoom(room);
-      const user = await addUser(name, id, room);
+      await addUser(name, id, room);
       const msg = `${name}, welcome to room ${room}.`;
-      const sender = "Bot";
+      const sender = 'Bot';
 
       try {
         const r: RoomType = await sendMessage(`${name} has joined!`, currRoom.name, sender);
@@ -44,11 +46,11 @@ nextApp.prepare().then(async () => {
           room: r.name,
           messages: r.messages.map((m: any) => ({
             sender: m.sender,
-            message: m.message
-          }))
+            message: m.message,
+          })),
         });
-        socket.broadcast.to(r.name).emit("message", {
-          sender: "Bot",
+        socket.broadcast.to(r.name).emit('message', {
+          sender: 'Bot',
           message: `${name} has joined!`,
         });
       } catch (error) {
@@ -58,16 +60,16 @@ nextApp.prepare().then(async () => {
       callback();
     });
 
-    socket.on("sendMessage", async (message, name, room, callback) => {
+    socket.on('sendMessage', async (message, name, room, callback) => {
       try {
         const r = await sendMessage(message, room, name);
-        socket.emit("message", {
+        socket.emit('message', {
           sender: name,
-          message: message,
+          message,
         });
-        socket.broadcast.to(r.name).emit("message", {
+        socket.broadcast.to(r.name).emit('message', {
           sender: name,
-          message: message,
+          message,
         });
       } catch (error) {
         console.error(error);
@@ -76,20 +78,20 @@ nextApp.prepare().then(async () => {
       callback();
     });
 
-    socket.on("disconnect", async () => {
+    socket.on('disconnect', async () => {
       const user = await removeUser(socket.id);
       if (user) {
         const msg = `${user.name} has left.`;
-        const r = await sendMessage(msg, user.room);
-        socket.broadcast.to(user.room).emit("message", {
-          sender: "Bot",
+        await sendMessage(msg, user.room);
+        socket.broadcast.to(user.room).emit('message', {
+          sender: 'Bot',
           message: msg,
         });
       }
     });
   });
 
-  app.all("*", (req: any, res: any) => nextHandler(req, res));
+  app.all('*', (req: any, res: any) => nextHandler(req, res));
 
   server.listen(port, () => {
     console.log(`> Ready on http://localhost:${port}`);

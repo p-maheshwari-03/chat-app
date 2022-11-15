@@ -43,9 +43,9 @@ const JoinPage: FC = () => {
     <div className={styles.joinContainer}>
       <h1 className={styles.welcomeText}>Welcome to ChatApp</h1>
       <div className={styles.inputContainer}>
-        <input className={styles.inputBox} value={username} name="username" placeholder="User name" onChange={(e) => usernameChangeHandler(e)} />
+        <input className={styles.inputBox} value={username} name="userame" placeholder="User name" onChange={(e) => usernameChangeHandler(e)} />
         {nameError && <span className={styles.error}>User name required</span>}
-        <input className={styles.inputBox} value={roomName} name="roomname" placeholder="Room name" onChange={(e) => roomnameChangeHandler(e)} />
+        <input className={styles.inputBox} value={roomName} name="roomName" placeholder="Room name" onChange={(e) => roomnameChangeHandler(e)} />
         {roomError && <span className={styles.error}>Room name required</span>}
       </div>
       <button type="submit" className={styles.joinButton} onClick={handleJoin}>Join</button>

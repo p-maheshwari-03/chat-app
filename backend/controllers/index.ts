@@ -60,15 +60,10 @@ export const addUser = (name: string, id: string, room: string): Promise<UserTyp
 export const sendMessage = (msg: string, roomId: string, sender: string = "Bot"): Promise<RoomType> => {
   const room = roomId.trim();
   const message = msg.trim();
+  
   return new Promise((response, reject) => {
-
-    if (!room) {
-      reject(new Error("Room not found"));
-    }
-
-    if (!message) {
-      reject(new Error("Unable to send message"));
-    }
+    if (!room) reject(new Error("Room not found"));
+    if (!message) reject(new Error("Unable to send message"));
 
     Room.findOne({ name: room }).exec((error, data) => {
       if (data && !error) {
