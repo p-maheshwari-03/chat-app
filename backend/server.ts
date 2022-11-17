@@ -36,7 +36,6 @@ nextApp.prepare().then(async () => {
     socket.on('join', async ({ id = socket.id, name, room }, callback) => {
       const currRoom: RoomType = await findRoom(room);
       await addUser(name, id, room);
-      const msg = `${name}, welcome to room ${room}.`;
       const sender = 'Bot';
 
       try {
